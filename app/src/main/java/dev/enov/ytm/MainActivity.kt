@@ -139,7 +139,7 @@ fun MusicApp(vm: MusicViewModel = viewModel()) {
                     if (vm.downloads.isNotEmpty() && !vm.downloadBusy && vm.downloadStatus.startsWith("Saved")) TextButton(onClick = { tab = 2; vm.openLibrary("Offline songs"); vm.dismissDownloadNotice() }) { Text("Show") }
                     if (!vm.downloadBusy) IconButton(onClick = vm::dismissDownloadNotice) { Icon(Icons.Rounded.Close, "Dismiss download notice") }
                 }
-                when (tab) { 2 -> Library(vm); 3 -> Settings(vm); else -> if (vm.busy && vm.items.isEmpty()) Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() } else Feed(vm, tab == 1, ::refresh) }
+                when (tab) { 2 -> Library(vm); 3 -> Settings(vm); else -> if (vm.busy && vm.items.isEmpty()) LoadingSkeleton() else Feed(vm, tab == 1, ::refresh) }
             }
         }
         if (full && vm.current != null) FullPlayer(vm) { full = false }
@@ -258,7 +258,9 @@ private fun Library(vm: MusicViewModel) {
                 if (vm.signedIn) OutlinedButton(onClick = { uploader.launch(arrayOf("audio/*")) }, enabled = !vm.downloadBusy) { Text("Upload to Google") }
             }
         }
-        if (category == "Playlists" && selectedPlaylist == null && vm.activePlaylistId.isBlank()) {
+        if (vm.busy && vm.items.isEmpty()) {
+            LoadingSkeleton()
+        } else if (category == "Playlists" && selectedPlaylist == null && vm.activePlaylistId.isBlank()) {
             LazyColumn(Modifier.fillMaxSize()) {
                 item { Row(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text("On this device", Modifier.weight(1f), color = muted, style = MaterialTheme.typography.bodySmall)
@@ -301,8 +303,7 @@ private fun Library(vm: MusicViewModel) {
                     Text("This playlist is read-only in this session.", Modifier.padding(horizontal = 22.dp), color = muted, style = MaterialTheme.typography.bodySmall)
                     SongList(vm.items, vm, vm.pageTitle, "No tracks loaded.")
                 }
-            } else if (vm.busy && vm.items.isEmpty()) Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
-            else SongList(vm.items, vm, vm.pageTitle, "Nothing here yet. Save music or play a song to get started.")
+            } else SongList(vm.items, vm, vm.pageTitle, "Nothing here yet. Save music or play a song to get started.")
         }
     }
     if (naming) AlertDialog(onDismissRequest = { naming = false }, title = { Text(if (rename == null) "New playlist" else "Rename playlist") }, text = {
@@ -582,7 +583,7 @@ private fun Settings(vm: MusicViewModel) {
             listOf("Rose", "Iris", "Mint", "Amber").forEach { name -> FilterChip(selected = vm.theme == name, onClick = { vm.chooseTheme(name) }, label = { Text(name) }, leadingIcon = { Box(Modifier.size(12.dp).clip(CircleShape).background(accent(name))) }) }
         }
         Text("About", style = MaterialTheme.typography.titleMedium)
-        Text("ytm-rsk for Android\nBased on grapedjuice/ytm-rs · GPL-3.0\nLyrics by LRCLib\nUnofficial client, not affiliated with Google.", color = muted, lineHeight = 24.sp)
+        Text("ytm-rsk for Android\nBased on grapedjuice/ytm-rs · GPL-3.0\nLyrics by LRCLib\nLogo: ytm-rs smile + modified Android robot by Google (CC BY 3.0)\nUnofficial client, not affiliated with Google.", color = muted, lineHeight = 24.sp)
     }
 }
 
