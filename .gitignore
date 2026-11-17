@@ -14,3 +14,27 @@ app/src/main/jniLibs/
 dist/
 *.apk
 .DS_Store
+
+# Credentials, signing configuration, and local account data
+.env
+.env.*
+!.env.example
+secrets.properties
+keystore.properties
+key.properties
+credentials.json
+*service-account*.json
+*.pem
+*.key
+*.p12
+*.pfx
+.android/
+.aws/
+.codex/
+.agents/
+
+# Runtime captures and generated packages
+*.log
+*.hprof
+*.aab
+captures/
