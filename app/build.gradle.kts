@@ -10,9 +10,24 @@ android {
         applicationId = "dev.enov.ytm"
         minSdk = 26
         targetSdk = 36
-        versionCode = 4
-        versionName = "0.2.1"
+        versionCode = 5
+        versionName = "0.2.2"
         ndk { abiFilters += listOf("arm64-v8a", "x86_64") }
+    }
+    val releaseKeystore = providers.environmentVariable("YTM_KEYSTORE_PATH").orNull
+    signingConfigs {
+        if (!releaseKeystore.isNullOrBlank()) create("release") {
+            storeFile = file(releaseKeystore)
+            storePassword = providers.environmentVariable("YTM_KEYSTORE_PASSWORD").get()
+            keyAlias = providers.environmentVariable("YTM_KEY_ALIAS").get()
+            keyPassword = providers.environmentVariable("YTM_KEY_PASSWORD").get()
+        }
+    }
+    buildTypes {
+        release {
+            isDebuggable = false
+            if (!releaseKeystore.isNullOrBlank()) signingConfig = signingConfigs.getByName("release")
+        }
     }
     buildFeatures { compose = true }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
