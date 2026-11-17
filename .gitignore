@@ -1,0 +1,16 @@
+.tools/
+.gradle/
+.kotlin/
+.idea/
+*.iml
+**/build/
+native/target/
+local.properties
+upstream/
+reference/
+*.jks
+*.keystore
+app/src/main/jniLibs/
+dist/
+*.apk
+.DS_Store
