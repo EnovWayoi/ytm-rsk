@@ -1,5 +1,15 @@
 # Verification
 
+## Version 0.2.2 logo and loading states
+
+Checked November 17, 2026 (America/New_York). The release build and release lint pass, as do all ten shared Kotlin/JVM tests. No Rust code changed. `LoadingSkeleton` compiles in both build variants and replaces initial feed/library spinners, including saved-playlist loading. It uses one shared shimmer animation and a single accessible loading announcement, with no interactive placeholder controls.
+
+The launcher and app header use the new red Android/ytm-rs logo. The README uses the same image, with source credits in `docs/BRANDING.md` and the app's About text.
+
+The APK is built with `assembleRelease`, version 0.2.2 / code 5. APK inspection confirms that `android:debuggable` is not enabled, both ARM64 and x86-64 libraries are bundled, signature verification succeeds, and 16 KiB ZIP alignment passes. The signing certificate matches version 0.2.1; the existing development certificate is retained to preserve upgrade compatibility. The published filename is `ytm-rsk-v0.2.2.apk`. Signing inputs are supplied through environment variables and excluded from Git.
+
+These checks do not establish physical-phone rendering or screen-reader behavior. Earlier playback and account limitations below still apply.
+
 ## Version 0.2.1 queue and offline fixes
 
 Checked November 17, 2026 (America/New_York). Queue-origin policy tests cover Home/search/radio recommendations, collection/library/Explore exclusions and local-file exclusions. Drag target tests cover unequal row heights and both directions. The ten Kotlin tests and Android lint/build pass; the sixteen previously passing Rust tests concern unchanged native code.
