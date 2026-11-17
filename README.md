@@ -4,19 +4,19 @@
 
 A native YouTube Music client for Android, built with **Rust and Kotlin**.
 
-**ytm-rsk is an independent Android adaptation of [ytm-rs](https://github.com/grapedjuice/ytm-rs) by [grapedjuice](https://github.com/grapedjuice) and its contributors.** The original project provides the foundation for this port's YouTube Music integration and its app icon.
+**ytm-rsk is an independent Android adaptation of [ytm-rs](https://github.com/grapedjuice/ytm-rs) by [grapedjuice](https://github.com/grapedjuice) and its contributors.** The original project provides the foundation for this port's YouTube Music integration. The new red robot logo combines its smiling icon with the Android robot silhouette; see [logo credits](docs/BRANDING.md).
 
 [Download the APK](https://github.com/EnovWayoi/ytm-rsk/releases/latest) · [Release history](https://github.com/EnovWayoi/ytm-rsk/releases) · [Report an issue](https://github.com/EnovWayoi/ytm-rsk/issues)
 
 ## Install
 
-1. Download `ytm-rsk-debug.apk` from the [latest release](https://github.com/EnovWayoi/ytm-rsk/releases/latest).
+1. Download `ytm-rsk-v0.2.2.apk` from the [latest release](https://github.com/EnovWayoi/ytm-rsk/releases/latest).
 2. Open the APK on your Android device and allow installation from your browser or file manager when prompted.
 3. Open **ytm-rsk** and start browsing or searching.
 
 Requires **Android 8.0 or newer**. The APK includes **ARM64** for phones and **x86-64** for emulators. ARMv7-only devices are not supported.
 
-This is a development-signed APK for direct installation and testing, not a Play Store release. Updates published here retain the same application ID; installing over an earlier compatible build preserves your library and downloads. Independently built APKs may use a different signing key.
+The published APK uses the non-debuggable release variant for direct installation. It retains the existing development signing certificate for update compatibility; it is not a Play Store release. Updates published here retain the same application ID; installing over an earlier compatible build preserves your library and downloads. Independently built APKs may use a different signing key.
 
 ## Features
 
@@ -25,6 +25,7 @@ This is a development-signed APK for direct installation and testing, not a Play
 - Home combines **Listen again**, related Quick picks, and albums, artists and playlists from your listening activity.
 - Search songs, albums, artists, playlists and videos. Browse new releases, charts and moods.
 - Type filters, mood filters, list search and continuation loading.
+- Animated skeleton loaders for Home, Explore, search and library pages.
 - Local favorites, saved collections, history and editable playlists.
 - Import local audio through Android's file picker or supported file drops.
 - Optional podcast categories.
@@ -104,6 +105,17 @@ app/build/outputs/apk/debug/app-debug.apk
 
 Generated native libraries, build outputs, SDK paths, signing keys and downloaded toolchains are not committed. After a successful native build, `-SkipNative` can be used for an Android-only rebuild; rebuild native code after changing Rust.
 
+To create a signed release, provide your keystore through environment variables (keep the keystore and passwords out of Git), then run:
+
+```powershell
+$env:YTM_KEYSTORE_PATH = "C:\private\ytm-rsk.keystore"
+$env:YTM_KEY_ALIAS = "your-key-alias"
+# Set YTM_KEYSTORE_PASSWORD and YTM_KEY_PASSWORD securely in your environment.
+.\scripts\build.ps1 -Release
+```
+
+This produces `app/build/outputs/apk/release/app-release.apk`, runs the shared unit tests and release lint, and requires all four signing variables. Use the same signing certificate as your previous installation to update it without uninstalling.
+
 To run just the Rust tests:
 
 ```powershell
@@ -129,6 +141,8 @@ No analytics or developer-operated server. Catalog, audio and optional account a
 Library data, imported audio and downloads stay in app-private storage, with Android backup disabled. Sign out removes the stored Google session. Online browsing and streaming require internet; downloaded audio plays locally.
 
 ## Credits
+
+- [Logo sources and attribution](docs/BRANDING.md) - ytm-rs smile and the Android robot by Google, recolored red.
 
 - **[ytm-rs](https://github.com/grapedjuice/ytm-rs)** by **[grapedjuice](https://github.com/grapedjuice)** and its contributors — the original native Rust desktop app, API behavior, client constants, parser shapes and app icon used as the basis for this Android adaptation.
 - Upstream reference commit: [`97bc7ebe6591ed296bf714f1dba6cc9280bb9aab`](https://github.com/grapedjuice/ytm-rs/commit/97bc7ebe6591ed296bf714f1dba6cc9280bb9aab).
