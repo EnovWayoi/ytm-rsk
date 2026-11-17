@@ -1,6 +1,6 @@
 # ytm-rsk
 
-<img src="app/src/main/res/drawable-nodpi/ic_launcher.png" width="100" alt="ytm-rsk icon">
+<img src="https://raw.githubusercontent.com/EnovWayoi/ytm-rsk/e157d55916d2627ef9be76fbbbab260c82e6df31/app/src/main/res/drawable-nodpi/ic_launcher.png" width="160" alt="ytm-rsk red Android music robot logo">
 
 A native YouTube Music client for Android, built with **Rust and Kotlin**.
 
